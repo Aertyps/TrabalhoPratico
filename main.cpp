@@ -1,4 +1,5 @@
 #include <iostream>
+
 using namespace std;
 
 struct no{
@@ -91,6 +92,59 @@ void excluirPosicao(lista* pLista, int pos){
  
 }
 
+void gravar(){
+
+  int qtd = 0;
+  cout<<"\nQuantos elementos deseja gravar:";
+  cin>>qtd;
+
+  while(qtd > 0){
+    cout<<"\n\nInforme os lados do triangulo\n";
+
+          cout<<"Lado 1 : ";
+          //cin>>triangulo.lado1;
+
+          cout<<"Lado 2 : ";
+          //cin>>triangulo.lado2;
+
+          cout<<"Lado 3 : ";
+          //cin>>triangulo.lado3;
+  }
+  
+}
+
+void ler(){
+
+}
+
 int main() {
+
+  int opcao = 0;
  
+  do{
+    cout<<"\n\n#Triangulos Retangulos \n";
+    cout<<"\nDigite um numero:\n";
+    cout<<"1 - para Gravar os dados\n";
+    cout<<"2 - para Ler os dados\n";
+    cout<<"0 - para Sair\n";
+    cin>>opcao;
+
+    switch(opcao) {
+
+      case 0:
+          cout<<"Saindo do programa";
+        break;
+      case 1:
+          gravar();
+        break;
+      case 2:
+          ler();
+        break;
+      default:
+        cout<<"Opcao nao programada";
+        
+    }
+
+  }while(opcao != 0);
+
 }
