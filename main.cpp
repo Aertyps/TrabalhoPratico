@@ -1,15 +1,21 @@
 #include <iostream>
+#include"arquivo.cpp"
+#include<math.h>
 
 using namespace std;
 
 struct no{
   no* proximo;
-  int info;
+  int lado1;
+  int lado2;
+  int lado3;
 };
 
- no* cria(int info){
+ no* cria(int ld1, int ld2, int ld3){
     no* n = new no;
-    n->info = info;
+    n->lado1 = ld1;
+    n->lado2 = ld2;
+    n->lado3 = ld3;
     return n;
   }
 
@@ -39,9 +45,9 @@ bool finalLista(lista* plista){
   return (plista->marcador == NULL);
 }
 
-void incluirFim(lista* plista, int info){
+void incluirFim(lista* plista, int ld1, int ld2, int ld3){
   no* n;
-  n = cria(info);
+  n = cria(ld1, ld2, ld3);
 
   if(listaVazia(plista)){
     plista->primeiro = n;
@@ -56,14 +62,32 @@ void incluirFim(lista* plista, int info){
 }
 
 void imprimirLista(lista* pLista){
+
   pLista->marcador = pLista->primeiro;
-
+  cout<<"Triangulos inseridos\n";
   while(!finalLista(pLista)){
-    int informacao = pLista->marcador->info;
-    cout<<"A informação é "<<informacao<<"\n";
-
+    cout<<"Lado1: "<<pLista->marcador->lado1<<" Lado2: "<<pLista->marcador->lado2<<" Lado3: "<<pLista->marcador->lado3<<"\n";
     pLista->marcador = pLista->marcador->proximo;
   }
+}
+
+string preEscrita(lista* pLista){
+
+  pLista->marcador = pLista->primeiro;
+  string txt = "",num_str ="";
+ 
+  while(!finalLista(pLista)){
+
+    txt +="l1:"+ to_string(pLista->marcador->lado1)+"l2:"+to_string(pLista->marcador->lado2)+"l3:"+to_string(pLista->marcador->lado3);
+
+    pLista->marcador = pLista->marcador->proximo;
+
+    if(!finalLista(pLista)){
+      txt +="\n";
+    }
+  }
+
+  return txt;
 }
 
 void excluirPosicao(lista* pLista, int pos){
@@ -92,32 +116,42 @@ void excluirPosicao(lista* pLista, int pos){
  
 }
 
-void gravar(){
+void gravar(lista* pLista){
 
   int qtd = 0;
-  cout<<"\nQuantos elementos deseja gravar:";
+  int l1=0, l2=0, l3=0;
+  cout<<"\nQuantos elementos deseja gravar:\n";
   cin>>qtd;
 
   while(qtd > 0){
     cout<<"\n\nInforme os lados do triangulo\n";
 
           cout<<"Lado 1 : ";
-          //cin>>triangulo.lado1;
+            cin>>l1;
 
           cout<<"Lado 2 : ";
-          //cin>>triangulo.lado2;
+            cin>>l2;
 
           cout<<"Lado 3 : ";
-          //cin>>triangulo.lado3;
+            cin>>l3;
+
+          incluirFim(pLista, l1, l2, l3);
+    qtd--;
   }
+
+  Arquivo arquivo;
+  arquivo.Escrita(preEscrita(pLista));
   
 }
 
-void ler(){
-
+void ler(lista* pLista){
+  imprimirLista(pLista);
 }
 
 int main() {
+
+  lista* tLista = new lista;
+  iniciarLista(tLista);
 
   int opcao = 0;
  
@@ -135,10 +169,10 @@ int main() {
           cout<<"Saindo do programa";
         break;
       case 1:
-          gravar();
+          gravar(tLista);
         break;
       case 2:
-          ler();
+          ler(tLista);
         break;
       default:
         cout<<"Opcao nao programada";
