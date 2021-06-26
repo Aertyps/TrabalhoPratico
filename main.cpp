@@ -187,8 +187,9 @@ void leitura(lista* pLista){
         }
 
       }
-      cout<<"\n "<<l1<<" "<<l2<<" "<<l3;
-      float num_float = std::stof(str);
+      
+      incluirFim(pLista, stof(l1), stof(l2), stof(l3));
+      
       l1 = "";
       l2 = "";
       l3 = "";
