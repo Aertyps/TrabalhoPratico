@@ -16,6 +16,7 @@ struct no{
     n->lado1 = ld1;
     n->lado2 = ld2;
     n->lado3 = ld3;
+    n->proximo = NULL;
     return n;
   }
 
@@ -124,8 +125,9 @@ string preEscrita(lista* pLista){
 }
 
 void excluirPosicao(lista* pLista, int pos){
-  no* anterior = new no;
-  no* aux = new no;
+  no* anterior;
+  no* aux;
+  no* apagado;
 
   if(!listaVazia(pLista)){
     pLista->marcador = pLista->primeiro;
@@ -144,6 +146,8 @@ void excluirPosicao(lista* pLista, int pos){
           }
         anterior->proximo = aux;
       }
+      apagado = pLista->marcador;
+      free(apagado);
     }
   }
  
@@ -156,7 +160,8 @@ void leitura(lista* pLista){
     ifstream leitor;
     leitor.open("banco.txt", ios::in);
 
-    while(!leitor.eof()){
+    if(leitor.is_open()){
+      while(!leitor.eof()){
       leitor>>txt;
 
       for(int i = 0; i < txt.length(); i++){
@@ -187,30 +192,32 @@ void leitura(lista* pLista){
         }
 
       }
-      
+
       incluirFim(pLista, stof(l1), stof(l2), stof(l3));
-      
+
       l1 = "";
       l2 = "";
       l3 = "";
     }
+    }
+    
 
     leitor.close();
-    //return texto;
   }
 
-  bool escrita(string txt){
+  void escrita(string txt){
     ofstream escritor;
     escritor.open("banco.txt", ios::out);
     escritor<<txt;
     escritor.close();
-    return true;
+    
   }
 
 void gravar(lista* pLista){
 
   int qtd = 0;
   float l1=0, l2=0, l3=0;
+
   cout<<"\nQuantos elementos deseja gravar:\n";
   cin>>qtd;
 
@@ -229,9 +236,8 @@ void gravar(lista* pLista){
           incluirFim(pLista, l1, l2, l3);
     qtd--;
   }
-
-  
-  escrita(preEscrita(pLista));
+      leitura(pLista);
+      escrita(preEscrita(pLista));
   
 }
 
@@ -240,8 +246,24 @@ void ler(lista* pLista){
   imprimirLista(pLista);
 }
 
+void libera(lista* pLista){
+  
+  if(!listaVazia(pLista)){
+
+      while(pLista->tamanho > 0){
+        excluirPosicao(pLista, 0);
+        pLista->tamanho --;
+    }
+
+  }
+ 
+}
+
 int main() {
-  lista* tLista;
+  
+  lista* tLista = new lista;
+  iniciarLista(tLista);
+
   int opcao = 0;
  
   do{
@@ -256,19 +278,15 @@ int main() {
 
       case 0:
           cout<<"Saindo do programa";
-
         break;
       case 1:
-          tLista = new lista;
-          iniciarLista(tLista);
           gravar(tLista);
-
+          libera(tLista);
         break;
       case 2:
-          tLista = new lista;
-          iniciarLista(tLista);
+         
           ler(tLista);
-          
+          libera(tLista);
         break;
       default:
         cout<<"Opcao nao programada";
